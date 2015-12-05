@@ -582,25 +582,25 @@ public:
             // check movement down and to the left
             else if (columnAfter < columnPre){
                 for(int i = rowPre + 1; i < rowAfter; i++){
-                    for(int j = columnPre - 1; j > columnAfter; j--){
+                    int j = columnPre - 1;
                         if(board [i] [j] != "SPACE"){
                             cout<< "Illegal move, piece in the way!\n";
                             return false;
                         }
-                    }
-                    
+                        
+                    columnPre--;                    
                 }
             }
             
             // check movement down and to the right
             else if (columnAfter > columnPre){
                 for(int i = rowPre + 1; i < rowAfter; i++){
-                    for(int j = columnPre + 1; j > columnAfter; j++){
-                        if(board [i] [j] != "SPACE"){
-                            cout<< "Illegal move, piece in the way!\n";
-                            return false;
-                        }
+                    int j = columnPre + 1;
+                    if(board [i] [j] != "SPACE"){
+                        cout<< "Illegal move, piece in the way!\n";
+                        return false;
                     }
+                    columnPre++;                   
                     
                 }
             }
