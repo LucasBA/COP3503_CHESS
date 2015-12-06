@@ -621,26 +621,26 @@ public:
             
             // check movement up and to the left
             else if (columnAfter < columnPre){
-                for(int i = columnPre - 1; i > columnAfter; i--){
-                    for(int j = rowPre - 1; j > rowAfter; j--){
+                for(int j = columnPre - 1; j > columnAfter; j--){
+                    int i = rowPre - 1;
                         if(board [i] [j] != "SPACE"){
                             cout<< "Illegal move, piece in the way!\n";
                             return false;
                         }
-                    }
+                    rowPre--;
                     
                 }
             }
             
             // check movement up and to the right
             else if (columnAfter > columnPre){
-                for(int i = columnPre + 1; i > columnAfter; i--){
-                    for(int j = rowPre - 1; j < rowAfter; j++){
+                for(int j = columnPre + 1; j > columnAfter; j--){
+                    int i = rowPre - 1;
                         if(board [i] [j] != "SPACE"){
                             cout<< "Illegal move, piece in the way!\n";
                             return false;
                         }
-                    }
+                    rowPre++;
                     
                 }
             }
