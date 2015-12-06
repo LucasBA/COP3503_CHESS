@@ -1509,7 +1509,7 @@ public:
 			return true;
 		}
 		else{
-			cout << "A value is off";
+			cout << "A value is off" << endl;
 			return false;
 		}
     }
