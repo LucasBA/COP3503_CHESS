@@ -61,7 +61,7 @@ int main(){
 					cin>> moveStringAfter;
 					newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter);
 					playerOne = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
-					newBoard.getBoard();
+					
 					
 				}
 				
@@ -77,7 +77,7 @@ int main(){
 					cin>> moveStringAfter;
 					newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter);
 					playerTwo = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
-					newBoard.getBoard();
+					
 					
 				}
 				
