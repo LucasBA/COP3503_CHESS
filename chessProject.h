@@ -1395,113 +1395,156 @@ public:
     void checkMate(){
         
     }
-    void getMoveSpot(string moveStringPre, string moveStringAfter, int& rowPre, int& columnPre, int& rowAfter, int& columnAfter){
-        if(moveStringPre.length() != 2 || moveStringPre.length() != 2){
+    
+    bool getMoveSpot(string moveStringPre, string moveStringAfter, int& rowPre, int& columnPre, int& rowAfter, int& columnAfter){
+        int checker = 0; // Checking if it gets both row and column
+        
+        if(moveStringPre.length() != 2 || moveStringAfter.length() != 2){
             cout<< "Wrong format. Write one number and one letter like this: 1A.\n";
+            return false;
         }
         else{
             if((moveStringPre.substr(0,1)) == "1"){
                 rowPre = 1;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "2"){
                 rowPre = 2;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "3"){
                 rowPre = 3;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "4"){
                 rowPre = 4;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "5"){
                 rowPre = 5;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "6"){
                 rowPre = 6;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "7"){
                 rowPre = 7;
+                checker++;
             }
             else if((moveStringPre.substr(0,1)) == "8"){
                 rowPre = 8;
+                checker++;
             }
             
             if((moveStringAfter.substr(0,1)) == "1"){
                 rowAfter = 1;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "2"){
                 rowAfter = 2;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "3"){
                 rowAfter = 3;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "4"){
                 rowAfter = 4;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "5"){
                 rowAfter = 5;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "6"){
                 rowAfter = 6;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "7"){
                 rowAfter = 7;
+                checker++;
             }
             else if((moveStringAfter.substr(0,1)) == "8"){
                 rowAfter = 8;
+                checker++;
             }
             
             
             if((moveStringPre.substr(1,1) == "A") || (moveStringPre.substr(1,1) == "a")){
                 columnPre = 1;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "B") || (moveStringPre.substr(1,1) == "b")){
                 columnPre = 2;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "C") || (moveStringPre.substr(1,1) == "c")){
                 columnPre = 3;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "D") || (moveStringPre.substr(1,1) == "d")){
                 columnPre = 4;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "E") || (moveStringPre.substr(1,1) == "e")){
                 columnPre = 5;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "F") || (moveStringPre.substr(1,1) == "f")){
                 columnPre = 6;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "G") || (moveStringPre.substr(1,1) == "g")){
                 columnPre = 7;
+                checker++;
             }
             else if((moveStringPre.substr(1,1) == "H") || (moveStringPre.substr(1,1) == "h")){
                 columnPre = 8;
+                checker++;
             }
             
             if((moveStringAfter.substr(1,1) == "A") || (moveStringAfter.substr(1,1) == "a")){
                 columnAfter = 1;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "B") || (moveStringAfter.substr(1,1) == "b")){
                 columnAfter = 2;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "C") || (moveStringAfter.substr(1,1) == "c")){
                 columnAfter = 3;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "D") || (moveStringAfter.substr(1,1) == "d")){
                 columnAfter = 4;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "E") || (moveStringAfter.substr(1,1) == "e")){
                 columnAfter = 5;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "F") || (moveStringAfter.substr(1,1) == "f")){
                 columnAfter = 6;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "G") || (moveStringAfter.substr(1,1) == "g")){
                 columnAfter = 7;
+                checker++;
             }
             else if((moveStringAfter.substr(1,1) == "H") || (moveStringAfter.substr(1,1) == "h")){
                 columnAfter = 8;
+                checker++;
             }
         }
         
+        if (checker == 4){
+			return true;
+		}
+		else{
+			cout << "A value is off";
+			return false;
+		}
     }
     
     bool isPathClear(int rowPre, int columnPre, int rowAfter, int columnAfter){

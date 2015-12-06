@@ -13,11 +13,15 @@ int main(){
     string playerTwoName;
     
     while (exit != true){
+		cout << "\n\n";
         cout << "MAIN MENU" << endl;
+        cout << endl;
         cout << "Please select an option (1, 2, 0). Choice: " << endl;
+        cout << endl;
         cout << "1: Rules of chess" << endl;
         cout << "2: A game of chess" << endl;
         cout << "0: Exit" << endl;
+        cout << endl;
         cin >> menuSelection;
         if (menuSelection == 0){
             exit = true;
@@ -129,11 +133,12 @@ int main(){
             cin >> playerTwoName;
             cout << endl;
             
-            cout << "START!" << endl;
+            cout << "\t\t\t\t-START-" << endl;
+            cout << endl;
             newBoard.setUpBoard();
             cout << "Please enter which piece you would like to move by coordinates." << endl;
             
-            cout << "Example: \"Move piece \" 1A \" to \"2A\"." << endl;
+            cout << "Example: \"Move piece \"1a\" to \"2a\"." << endl;
             
             while (gameFinished != true){
                 int rowPre;
@@ -143,7 +148,7 @@ int main(){
                 int playerNumber;
                 bool playerOne = true;
                 bool playerTwo = true;
-                
+                bool moveChecker = false;
                 
                 
                 while (playerOne == true){
@@ -151,16 +156,23 @@ int main(){
 					newBoard.getBoard();
 					string moveStringPre = "";
 					string moveStringAfter = "";
+					
+					
 					cout << playerOneName << " move piece ";
 					cin>> moveStringPre;
-					
-					cout << " to ";
+				
+					cout << "to ";
 					cin>> moveStringAfter;
-					newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter);
-					playerOne = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
+											
+					moveChecker = newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter);
 					
+					if (moveChecker == true){
+						
+						playerOne = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
+					}
 					
 				}
+				
 				if (newBoard.check() == 2){
 					cout << "Player 2 is in check" << endl;
 				}
@@ -178,9 +190,12 @@ int main(){
                 
 					cout << " to ";
 					cin>> moveStringAfter;
-					newBoard.getMoveSpot(moveStringPre, moveStringAfter, rowPre, columnPre, rowAfter, columnAfter);
-					playerTwo = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
 					
+					moveChecker = newBoard.getMoveSpot(moveStringPre, moveStringAfter, rowPre, columnPre, rowAfter, columnAfter);
+					
+					if (moveChecker == true){
+						playerTwo = newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter);				
+					}
 					
 				}
 				
