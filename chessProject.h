@@ -190,7 +190,7 @@ public:
             return false;
         }
         else if (piece == addColor("K", "red") && playerNumber == 1) {
-            if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
+            if (this->kingConstraintsP1(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP1(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
 					return false;
 				}
@@ -252,7 +252,7 @@ public:
 			return false;
 		}
 		else if (piece == addColor("K", "blue") && playerNumber == 2) {
-			if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
+			if (this->kingConstraintsP2(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP2(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
 					return false;
 				}
@@ -408,7 +408,28 @@ public:
         return true;
     }
     
-    bool kingConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
+    bool kingConstraintsP1(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
+        int logicMoveRow;
+        int logicMoveColumn;
+        
+        logicMoveRow = rowAfter - rowPre;
+        logicMoveColumn = columnAfter - columnPre;
+        
+        if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
+			if (this -> movePiece(playerNumber, 1, 8 , 1, 6)){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+        else if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {		//King can only move 1 space in any direction
+            return true;
+        }
+        return false;
+    }
+    
+    bool kingConstraintsP2(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
         int logicMoveRow;
         int logicMoveColumn;
         
@@ -420,6 +441,7 @@ public:
         }
         return false;
     }
+    
     bool pawnConstraintsP2(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs to check if pieces are in the way
         int logicMoveRow;
         int logicMoveColumn;

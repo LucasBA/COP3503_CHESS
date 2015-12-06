@@ -183,6 +183,7 @@ int main(){
 					
 					
 				}
+				
 				if (newBoard.check() == 1){
 					cout << "Player 1 is in check" << endl;
 				}
