@@ -415,8 +415,17 @@ public:
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
         
+        //This is the castling if statements
         if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
-			if (this -> movePiece(playerNumber, 1, 8 , 1, 6)){
+			if (this -> movePiece(playerNumber, 1, 8 , 1, 6) == false){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
+			if (this -> movePiece(playerNumber, 1, 1 , 1, 4) == false){
 				return true;
 			}
 			else {
@@ -436,6 +445,22 @@ public:
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
         
+        if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
+			if (this -> movePiece(playerNumber, 8, 8 , 8, 6) == false){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
+			if (this -> movePiece(playerNumber, 8, 1 , 8, 4) == false){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
         if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {		//King can only move 1 space in any direction
             return true;
         }
