@@ -189,7 +189,7 @@ public:
             return false;
         }
         else if (piece == addColor("K", "red") && playerNumber == 1) {
-            if (this->kingConstraintsP1(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
+            if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP1(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
 					return false;
 				}
@@ -251,7 +251,7 @@ public:
 			return false;
 		}
 		else if (piece == addColor("K", "blue") && playerNumber == 2) {
-			if (this->kingConstraintsP2(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
+			if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP2(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
 					return false;
 				}
@@ -310,30 +310,31 @@ public:
     bool pawnConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter){
         int logicMoveRow;
         int logicMoveColumn;
-        cout<<"Debug3"<<endl;
-        cout<<"rowAfter"<<rowAfter<<endl;
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
         
         if (logicMoveRow == 2 && columnPre == columnAfter) {			//P1 pawns can move 2 spaces if they are at row 2
             if (rowPre == 2 && columnPre == columnAfter) {				
 				if (pieceP2(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-                    return false;
+					return false;
 				}
-                if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}
+                if (rowAfter==8){offerPawnSwap(1,columnAfter);}
+
                 return true;
             }
         }
         else if (logicMoveRow == 1 && board [rowAfter] [columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)){
-            if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}            
+        if (rowAfter==8){offerPawnSwap(1,columnAfter);}
+
             return true;
             //May need to check to see if opponents piece is taken.
         }
         else if (logicMoveRow == 1 && columnPre == columnAfter){		//Otherwise, they only move 1 space forward
 			if (pieceP2(rowAfter, columnAfter)) {						//Makes sure pawns can't take what's in front of them
-                return false;
+				return false;
 			}
-        if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}          
+        if (rowAfter==8){offerPawnSwap(1,columnAfter);}
+
 			return true;
         }
         return false;
@@ -409,92 +410,53 @@ public:
         return true;
     }
     
-    bool kingConstraintsP1(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
+    bool kingConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
         int logicMoveRow;
         int logicMoveColumn;
         
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
         
-        //This is the castling if statements
-        if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
-			if (this -> movePiece(playerNumber, 1, 8 , 1, 6) == false){
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
-			if (this -> movePiece(playerNumber, 1, 1 , 1, 4) == false){
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-        else if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {		//King can only move 1 space in any direction
-            return true;
-        }
-        return false;
-    }
-    
-    bool kingConstraintsP2(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        int logicMoveRow;
-        int logicMoveColumn;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        
-        if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
-			if (this -> movePiece(playerNumber, 8, 8 , 8, 6) == false){
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
-			if (this -> movePiece(playerNumber, 8, 1 , 8, 4) == false){
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
         if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {		//King can only move 1 space in any direction
             return true;
         }
         return false;
     }
-    
     bool pawnConstraintsP2(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs to check if pieces are in the way
         int logicMoveRow;
         int logicMoveColumn;
         
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
-        cout<<"Debug1"<<endl;
-        cout<<"rowAfter"<<rowAfter<<endl;
         if (logicMoveRow == -2 && columnPre == columnAfter) {
             if (rowPre == 7 && columnPre == columnAfter) {				//P2 pawns can move 2 spaces if they are at row 7
 				if (pieceP1(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
+
                     return false;
 				}
-                if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}				
-                return true;
+
+                if (rowAfter==1){offerPawnSwap(2,columnAfter);}
+
+
+				return true;
             }
         }
         else if (logicMoveRow == -1 && board[rowAfter][columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)) {
-            if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}            
+
+
+        if (rowAfter==1){offerPawnSwap(2,columnAfter);}
+
+
             return true;
             //May need to check to see if opponents piece is taken.
         }
         else if (logicMoveRow == -1 && columnPre == columnAfter) {		//Otherwise, they only move 1 space forward
 			if (pieceP1(rowAfter, columnAfter)) {						//Makes sure pawns can't take what's in front of them
-				return false;
+				
+                return false;
 			}
-            if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}
+
+        if (rowAfter==1){offerPawnSwap(2,columnAfter);}
 			return true;
         }
         return false;
@@ -1663,12 +1625,14 @@ public:
         string color;
         int row;
         if (player == 2){
+            cout<<"PLAYER2";
             row = 1;
             color = "blue";
             board [row+1] [column] = "SPACE";
 
         }        
         else if (player == 1){
+            cout<<"PLAYER1";
             row = 8;
             color = "red";
             board [row-1] [column] = "SPACE";
