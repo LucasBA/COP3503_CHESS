@@ -28,9 +28,11 @@ string addColor(string str, string color){
 class chessBoard{
 private:
     string board [9] [9];
+    bool pawnswap;
     
 public:
     chessBoard(){
+        pawnswap = false;
         for (int row = 1; row < 9; row++){
             for (int column = 0; column < 1; column++){
                 string rowNumbers[8] = {addColor("1","green"), addColor("2","green"),addColor("3","green"),addColor("4","green"),addColor("5","green"),addColor("6","green"),addColor("7","green"),addColor("8","green")};
@@ -120,8 +122,12 @@ public:
     
     bool movePiece(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter){
         if (this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true){
-            board [rowAfter] [columnAfter] = board [rowPre] [columnPre];
+            if (this->pawnswap==false){
+                board [rowAfter] [columnAfter] = board [rowPre] [columnPre];
+            }
+            this->pawnswap = false;
             board [rowPre] [columnPre] = "SPACE";
+<<<<<<< HEAD
             if (this -> check() == 1 || this -> check() == 3){
 			cout << "Player 1 cannot put yourself into check." << endl;
 			board [rowAfter] [columnAfter] = "SPACE";
@@ -135,6 +141,9 @@ public:
             return true;
 			}
             return false;
+=======
+        return false;
+>>>>>>> 5a27483868ff6595b711c0284ce3166d9d5ddce3
         }
         return true;
     }
@@ -145,19 +154,8 @@ public:
         
         //Check to see if own piece is at the after point
         //if (
-        if (piece == addColor("P" , "red") && playerNumber == 1){
-            if (this -> pawnConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true){
-                if(this -> isPathClear(rowPre, columnPre, rowAfter, columnAfter)){
-					if (this->pieceP1(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
-						return false;
-					}
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-        else if (piece == addColor("KN", "red") && playerNumber == 1) {
+
+        if (piece == addColor("KN", "red") && playerNumber == 1) {
             if (this->knightConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP1(rowAfter, columnAfter)) {
 					return false;
@@ -201,24 +199,30 @@ public:
             }
             return false;
         }
+<<<<<<< HEAD
         
+=======
+        else if (piece == addColor("P" , "red") && playerNumber == 1){
+            if (this -> pawnConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true){
+                if(this -> isPathClear(rowPre, columnPre, rowAfter, columnAfter)){
+                    if (this->pieceP1(rowAfter, columnAfter)) {     //Makes sure that P1's piece cannot take P1's piece.
+                        return false;
+                    }
+                    if (rowAfter==8){return offerPawnSwap(1,columnAfter);}
+
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+>>>>>>> 5a27483868ff6595b711c0284ce3166d9d5ddce3
         else if (piece == addColor("K", "red") && playerNumber == 1) {
             if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP1(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
 					return false;
 				}
                 return true;
-            }
-            return false;
-        }
-        else if (piece == addColor("P" , "blue") && playerNumber == 2) {
-            if (this->pawnConstraintsP2(rowPre, columnPre, rowAfter, columnAfter) == true) {
-				if (this->isPathClear(rowPre, columnPre, rowAfter, columnAfter)) {
-					if (this->pieceP2(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
-						return false;
-					}
-					return true;
-				}
             }
             return false;
         }
@@ -273,7 +277,18 @@ public:
 			}
 			return false;
 		}
-
+        else if (piece == addColor("P" , "blue") && playerNumber == 2) {
+            if (this->pawnConstraintsP2(rowPre, columnPre, rowAfter, columnAfter) == true) {
+                if (this->isPathClear(rowPre, columnPre, rowAfter, columnAfter)) {
+                    if (this->pieceP2(rowAfter, columnAfter)) {     //Makes sure that P1's piece cannot take P1's piece.
+                        return false;
+                    }
+                    if (rowAfter==1){return offerPawnSwap(2,columnAfter);}
+                    return true;
+                }
+            }
+            return false;
+        }
         return false;
     }
     
@@ -304,7 +319,7 @@ public:
         string parsingNameOfPiece;
         
         parsingNameOfPiece = board [rowPre] [columnPre];
-        if (parsingNameOfPiece[5]*4==196){			//Check if color is red
+        if (parsingNameOfPiece[5]==49){			//Check if color is red
             return true;
         }
         return false;
@@ -315,7 +330,7 @@ public:
         string parsingNameOfPiece;
         
         parsingNameOfPiece = board [rowPre] [columnPre];
-        if (parsingNameOfPiece[5]*4==208){			//Check if color is blue
+        if (parsingNameOfPiece[5]==52){			//Check if color is blue
             return true;
         }
         return false;
@@ -332,14 +347,10 @@ public:
 				if (pieceP2(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
 					return false;
 				}
-                if (rowAfter==8){offerPawnSwap(1,columnAfter);}
-
                 return true;
             }
         }
         else if (logicMoveRow == 1 && board [rowAfter] [columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)){
-        if (rowAfter==8){offerPawnSwap(1,columnAfter);}
-
             return true;
             //May need to check to see if opponents piece is taken.
         }
@@ -347,7 +358,6 @@ public:
 			if (pieceP2(rowAfter, columnAfter)) {						//Makes sure pawns can't take what's in front of them
 				return false;
 			}
-        if (rowAfter==8){offerPawnSwap(1,columnAfter);}
 
 			return true;
         }
@@ -449,18 +459,12 @@ public:
                     return false;
 				}
 
-                if (rowAfter==1){offerPawnSwap(2,columnAfter);}
 
 
 				return true;
             }
         }
         else if (logicMoveRow == -1 && board[rowAfter][columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)) {
-
-
-        if (rowAfter==1){offerPawnSwap(2,columnAfter);}
-
-
             return true;
             //May need to check to see if opponents piece is taken.
         }
@@ -469,8 +473,6 @@ public:
 				
                 return false;
 			}
-
-        if (rowAfter==1){offerPawnSwap(2,columnAfter);}
 			return true;
         }
         return false;
@@ -1635,18 +1637,16 @@ public:
         }
         return true;
     }
-    void offerPawnSwap(int player, int column){
+    bool offerPawnSwap(int player, int column){
         string color;
         int row;
         if (player == 2){
-            cout<<"PLAYER2";
             row = 1;
             color = "blue";
             board [row+1] [column] = "SPACE";
 
         }        
         else if (player == 1){
-            cout<<"PLAYER1";
             row = 8;
             color = "red";
             board [row-1] [column] = "SPACE";
@@ -1667,7 +1667,8 @@ public:
         if (selection==4){
             board [row][column] = addColor("R", color);
         }
-
+        this->pawnswap=true;
+        return true;
     }
 
 };
