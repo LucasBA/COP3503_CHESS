@@ -11,7 +11,8 @@ int main(){
     int menuSelection;
     string playerOneName;
     string playerTwoName;
-    
+
+
     while (exit != true){
         cout << "MAIN MENU" << endl;
         cout << "Please select an option (1, 2, 0). Choice: " << endl;
