@@ -122,10 +122,23 @@ public:
         if (this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true){
             board [rowAfter] [columnAfter] = board [rowPre] [columnPre];
             board [rowPre] [columnPre] = "SPACE";
+            if (this -> check() == 1 || this -> check() == 3){
+			cout << "Player 1 cannot put yourself into check." << endl;
+			board [rowAfter] [columnAfter] = "SPACE";
+            board [rowPre] [columnPre] = addColor("K", "red");
+            return true;
+			}
+			if (this -> check() == 2 || this -> check() == 4){
+			cout << "Player 2 cannot put yourself into check." << endl;
+			board [rowAfter] [columnAfter] = "SPACE";
+            board [rowPre] [columnPre] = addColor("K", "blue");
+            return true;
+			}
             return false;
         }
         return true;
     }
+    
     bool legalityOfMove(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter){
         
         string piece = board [rowPre] [columnPre];
@@ -188,6 +201,7 @@ public:
             }
             return false;
         }
+        
         else if (piece == addColor("K", "red") && playerNumber == 1) {
             if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
 				if (this->pieceP1(rowAfter, columnAfter)) {		//Makes sure that P1's piece cannot take P1's piece.
