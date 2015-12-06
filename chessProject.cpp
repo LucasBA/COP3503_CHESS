@@ -11,7 +11,8 @@ int main(){
     int menuSelection;
     string playerOneName;
     string playerTwoName;
-    
+
+
     while (exit != true){
 		cout << "\n\n";
         cout << "MAIN MENU" << endl;

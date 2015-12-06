@@ -126,7 +126,6 @@ public:
         }
         return true;
     }
-    
     bool legalityOfMove(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter){
         
         string piece = board [rowPre] [columnPre];
@@ -303,36 +302,38 @@ public:
         
         parsingNameOfPiece = board [rowPre] [columnPre];
         if (parsingNameOfPiece[5]*4==208){			//Check if color is blue
-            //<<"true";
             return true;
         }
-        //cout<<"false";
         return false;
     }
     
     bool pawnConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter){
         int logicMoveRow;
         int logicMoveColumn;
-        
+        cout<<"Debug3"<<endl;
+        cout<<"rowAfter"<<rowAfter<<endl;
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
         
         if (logicMoveRow == 2 && columnPre == columnAfter) {			//P1 pawns can move 2 spaces if they are at row 2
             if (rowPre == 2 && columnPre == columnAfter) {				
 				if (pieceP2(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-					return false;
+                    return false;
 				}
+                if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}
                 return true;
             }
         }
         else if (logicMoveRow == 1 && board [rowAfter] [columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)){
+            if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}            
             return true;
             //May need to check to see if opponents piece is taken.
         }
         else if (logicMoveRow == 1 && columnPre == columnAfter){		//Otherwise, they only move 1 space forward
 			if (pieceP2(rowAfter, columnAfter)) {						//Makes sure pawns can't take what's in front of them
-				return false;
+                return false;
 			}
+        if (rowAfter==8){cout<<"Debug4"<<endl;offerPawnSwap(2,columnAfter);return true;}          
 			return true;
         }
         return false;
@@ -473,16 +474,19 @@ public:
         
         logicMoveRow = rowAfter - rowPre;
         logicMoveColumn = columnAfter - columnPre;
-        
+        cout<<"Debug1"<<endl;
+        cout<<"rowAfter"<<rowAfter<<endl;
         if (logicMoveRow == -2 && columnPre == columnAfter) {
             if (rowPre == 7 && columnPre == columnAfter) {				//P2 pawns can move 2 spaces if they are at row 7
 				if (pieceP1(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-					return false;
+                    return false;
 				}
-				return true;
+                if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}				
+                return true;
             }
         }
         else if (logicMoveRow == -1 && board[rowAfter][columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)) {
+            if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}            
             return true;
             //May need to check to see if opponents piece is taken.
         }
@@ -490,6 +494,7 @@ public:
 			if (pieceP1(rowAfter, columnAfter)) {						//Makes sure pawns can't take what's in front of them
 				return false;
 			}
+            if (rowAfter==1){cout<<"Debug2"<<endl;offerPawnSwap(2,columnAfter);return true;}
 			return true;
         }
         return false;
@@ -1654,21 +1659,39 @@ public:
         }
         return true;
     }
-};
+    void offerPawnSwap(int player, int column){
+        string color;
+        int row;
+        if (player == 2){
+            row = 1;
+            color = "blue";
+            board [row+1] [column] = "SPACE";
 
-//When a piece is taken away, it is taken away to this object
-//When a pawn goes to the otherside, it can take one of the pieces
-//placed in this object.
+        }        
+        else if (player == 1){
+            row = 8;
+            color = "red";
+            board [row-1] [column] = "SPACE";
+        }
+        int selection;
+        cout<< "Enter a number to indicate which piece type to swap with pawn"<<endl;
+        cout<< "1.B, 2.KN, 3.Q, 4.R"<<endl;
+        cin>> selection;
+        if (selection==1){
+            board [row][column] = addColor("B", color);
+        }
+        if (selection==2){
+            board [row][column] = addColor("KN", color);
+        }
+        if (selection==3){
+            board [row][column] = addColor("Q", color);
+        }
+        if (selection==4){
+            board [row][column] = addColor("R", color);
+        }
 
-//There will be one for each player.
-
-class takenPieces{
-private:
-    string chessPieces[16];
-    
-public:
-    takenPieces(){
     }
+
 };
 
 #endif
