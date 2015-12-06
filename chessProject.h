@@ -1371,7 +1371,1005 @@ public:
 					}
 				}
 			}
+			
+			for(int i=0;i<8;i++){	//returns 3 if player 1 in checkmate, 1 if in check
+				for(int j=0;j<8;j++){
+					if(p2[i][j] == 5){
+						if(p1[i][j] == 2){
+							for(int x=-1;x<2;x++){
+								for(int z=-1;z<2;z++){
+									if(x==0 && z==0 || i+x < 0 || i+x > 7 || j+z < 0 || j+z > 7) continue;
+									if((p1[i+x][j+z] == 0 || p1[i+x][j+z] == 1) && p2[i+x][j+z] < 3){
+										return 2;
+									}
+								}
+							}
+							int kingx = j, kingy = i,checkx,checky;
+							int count = 0;
+							for(int x=0;x<8;x++){
+								for(int z=0;z<8;z++){
+									if(check[x][z] == true){
+										count++;
+										if(count == 2) return 4;
+										checkx = z;
+										checky = x;
+									}
+								}
+							}
+							if(board[checky][checkx] == addColor( "P", "blue")  || board[checky][checkx] == addColor( "KN", "blue") ){
+								if(p2[checky][checkx] == -1 && p1[checky][checkx] == 3) return 2;
+								else if(p2[checky][checkx] == 2) return 2;
+							}
+							else{
+								if(p2[checky][checkx] == -1 && p1[checky][checkx] == 3) return 2;
+								if(p2[checky][checkx] == 2) return 2;
+								else{
+									if(checkx-kingx == 0){
+										if(checky-kingy > 0){
+											int displace = 1;
+											while(checky-displace > kingy){
+												if(p2[checky-displace][checkx] == 2 || p2[checky-displace][checkx] == 1) return 2;
+												displace++;
+											}
+										}
+										else{
+											int displace = 1;
+											while(checky+displace < kingy){
+												if(p2[checky+displace][checkx] == 2 || p2[checky+displace][checkx] == 1) return 2;
+												displace++;
+											}
+										}
+									}
+									else if(checky-kingy == 0){
+										if(checkx-kingx > 0){
+											int displace = 1;
+											while(checkx-displace > kingx){
+												if(p2[checky][checkx-displace] == 2 || p2[checky][checkx-displace] == 1) return 2;
+												displace++;
+											}
+										}
+										else{
+											int displace = 1;
+											while(checkx+displace < kingx){
+												if(p2[checky][checkx+displace] == 2 || p2[checky][checkx+displace] == 1) return 2;
+												displace++;
+											}
+										}
+									}
+									else if(checky-kingy > 0 && checkx - kingx > 0){
+										int displace = 1;
+										while(checkx-displace > kingx){
+											if(p2[checky-displace][checkx-displace] == 2 || p2[checky-displace][checkx-displace] == 1) return 2;
+											displace++;
+										}
+									}
+									else if(checky-kingy < 0 && checkx-kingx > 0){
+										int displace = 1;
+										while(checkx-displace > kingx){
+											if(p2[checky+displace][checkx-displace] == 2 || p2[checky+displace][checkx-displace] == 1) return 2;
+											displace++;
+										}
+									}
+									else if(checky-kingy > 0 && checkx-kingx < 0){
+										int displace = 1;
+										while(checkx+displace < kingx){
+											if(p2[checky-displace][checkx+displace] == 2 || p2[checky-displace][checkx+displace] == 1) return 2;
+											displace++;
+										}
+									}
+									else if(checky-kingy < 0 && checkx-kingx < 0){
+										int displace = 1;
+										while(checkx+displace < kingx){
+											if(p2[checky+displace][checkx+displace] == 2 || p2[checky+displace][checkx+displace] == 1) return 2;
+											displace++;
+										}
+									}
+								}
+							}
+							return 4;
+						}
+					}
+				}
+			}
 		}
+		
+  /*  int check(){ 			//Returns 1 if PLAYER 1 is in check, 2 if PLAYER 2 is in check,
+								//3 if PLAYER 1 is in check mate, 4 if PLAYER 2 is in check mate
+								//returns 0 otherwise
+							   
+			int p1[8][8] = {0};
+			int p2[8][8] = {0};
+			bool check[8][8] = {false};
+			
+			for(int i=0;i<8;i++){	//player 1 pieces
+				for(int j=0;j<8;j++){
+					if(board[i+1][j+1] == addColor("K", "red")){
+						p1[i][j] = 5;
+					}
+					else if(board[i+1][j+1] == addColor( "P", "red")  || board[i+1][j+1] == addColor( "R", "red")  || board[i+1][j+1] == addColor( "KN", "red")  || board[i+1][j+1] == addColor( "B", "red")  || board[i+1][j+1] == addColor( "Q", "red") ){
+						p1[i][j] = 3;
+					}
+					else{
+						p1[i][j] = 0;
+					}
+				}
+			}
+			
+			for(int i=0;i<8;i++){	//player 2 pieces
+				for(int j=0;j<8;j++){
+					if(board[i+1][j+1] == addColor( "K", "blue") ){
+						p2[i][j] = 5;
+					}
+					else if(board[i+1][j+1] == addColor( "P", "blue")  || board[i+1][j+1] == addColor( "R", "blue")  || board[i+1][j+1] == addColor( "KN", "blue")  || board[i+1][j+1] == addColor( "B", "blue")  || board[i+1][j+1] == addColor( "Q", "blue") ){
+						p2[i][j] = 3;
+					}
+					else{
+						p2[i][j] = 0;
+					}
+				}
+			}
+			
+			for(int i=0;i<8;i++){
+				for(int j=0;j<8;j++){	//creates maps of possible moves for each player
+					if(board[i+1][j+1] == addColor( "P", "red") ){
+						if(p2[i+1][j] < 3 && p1[i+1][j] < 3 && p2[i+2][j] < 3 && p1[i+2][j] < 2){
+							p1[i+2][j] = 1;
+						}
+						if(p2[i+1][j] < 3 && p1[i+1][j] == 0){
+							p1[i+1][j] = 1;
+						}
+						if(i==0){
+							if(p2[i+1][j+1] > 2){
+								p1[i+1][j+1] = 2;
+								if(p2[i+1][j+1] == 5) check[i][j] = true;
+							}
+							else if(p1[i+1][j+1] == 3) p1[i+1][j+1] = 4;
+						}
+						else if(i==7){
+							if(p2[i+1][j-1] > 2){
+								p1[i+1][j-1] = 2;
+								if(p2[i+1][j-1] == 5) check[i][j] = true;
+							}
+							else if(p1[i+1][j-1] == 3) p1[i+1][j-1] = 4;
+						}
+						else{
+							if(p2[i+1][j+1] > 2){
+								p1[i+1][j+1] = 2;
+								if(p2[i+1][j+1] == 5) check[i][j] = true;
+							}
+							else if(p1[i+1][j+1] == 3) p1[i+1][j+1] = 4;
+							if(p2[i+1][j-1] > 2){
+								p1[i+1][j-1] = 2;
+								if(p2[i+1][j-1] == 5) check[i][j] = true;
+							}
+							else if(p1[i+1][j-1] == 3) p1[i+1][j-1] = 4;
+						}
+					}
+					if(board[i+1][j+1] == addColor( "P", "blue") ){
+						if(p2[i-1][j] < 3 && p1[i-1][j] < 3 && p2[i-2][j] < 2 && p1[i-2][j] < 3){
+							p2[i-2][j] = 1;
+						}
+						if(p1[i-1][j] < 3 && p2[i-1][j] == 0){
+							p2[i-1][j] = 1;
+						}
+						if(i==0){
+							if(p1[i-1][j+1] > 2){
+								p2[i-1][j+1] = 2;
+								if(p1[i-1][j+1] == 5) check[i][j] = true;
+							}
+							else if(p2[i-1][j+1] == 3) p2[i-1][j+1] = 4;
+						}
+						else if(i==7){
+							if(p1[i-1][j-1] > 2){
+								p2[i-1][j-1] = 2;
+								if(p1[i-1][j-1] == 5) check[i][j] = true;
+							}
+							else if(p2[i-1][j-1] == 3) p2[i-1][j-1] = 4;
+						}
+						else{
+							if(p1[i-1][j+1] > 2){
+								p2[i-1][j+1] = 2;
+								if(p1[i-1][j+1] == 5) check[i][j] = true;
+							}
+							else if(p2[i-1][j+1] == 3) p2[i-1][j+1] = 4;
+							if(p1[i-1][j-1] > 2){
+								p2[i-1][j-1] = 2;
+								if(p1[i-1][j-1] == 5) check[i][j] = true;
+							}
+							else if(p2[i-1][j-1] == 3) p2[i-1][j-1] = 4;
+						}
+					}
+					if(board[i+1][j+1] == addColor( "R", "red") ){
+						int displace = 1;
+						while(i-displace >= 0){
+							if(p1[i-displace][j] > 2){
+								if(p1[i-displace][j] == 3) p1[i-displace][j] = 4;
+								break;
+							}
+							else if(p2[i-displace][j] > 2){
+								p1[i-displace][j] = 2;
+								if(p2[i-displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j] = 2;
+								displace++;
+							}
+							
+						}
+						displace = 1;
+						while(i+displace <= 7){
+							if(p1[i+displace][j] > 2){
+								if(p1[i+displace][j] == 3) p1[i+displace][j] = 4;
+								break;
+							}
+							else if(p2[i+displace][j] > 2){
+								p1[i+displace][j] = 2;
+								if(p2[i+displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0){
+							if(p1[i][j-displace] > 2){
+								if(p1[i][j-displace] == 3) p1[i][j-displace] = 4;
+								break;
+							}
+							else if(p2[i][j-displace] > 2){
+								p1[i][j-displace] = 2;
+								if(p2[i][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7){
+							if(p1[i][j+displace] > 2){
+								if(p1[i][j+displace] == 3) p1[i][j+displace] = 4;
+								break;
+							}
+							else if(p2[i][j+displace] > 2){
+								p1[i][j+displace] = 2;
+								if(p2[i][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "R", "blue") ){
+						int displace = 1;
+						while(i-displace >= 0){
+							if(p2[i-displace][j] > 2){
+								if(p2[i-displace][j] == 3) p2[i-displace][j] = 4;
+								break;
+							}
+							else if(p1[i-displace][j] > 2){
+								p2[i-displace][j] = 2;
+								if(p1[i-displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j] = 2;
+								displace++;
+							}
+							
+						}
+						displace = 1;
+						while(i+displace <= 7){
+							if(p2[i+displace][j] > 2){
+								if(p2[i+displace][j] == 3) p2[i+displace][j] = 4;
+								break;
+							}
+							else if(p1[i+displace][j] > 2){
+								p2[i+displace][j] = 2;
+								if(p1[i+displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0){
+							if(p2[i][j-displace] > 2){
+								if(p2[i][j-displace] == 3) p2[i][j-displace] = 4;
+								break;
+							}
+							else if(p1[i][j-displace] > 2){
+								p2[i][j-displace] = 2;
+								if(p1[i][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7){
+							if(p2[i][j+displace] > 2){
+								if(p2[i][j+displace] == 3) p2[i][j+displace] = 4;
+								break;
+							}
+							else if(p1[i][j+displace] > 2){
+								p2[i][j+displace] = 2;
+								if(p1[i][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "B", "red") ){
+						int displace = 1;
+						while(i-displace >= 0 && j-displace >= 0){
+							if(p1[i-displace][j-displace] > 2){
+								if(p1[i-displace][j-displace] == 3) p1[i-displace][j-displace] = 4;
+								break;
+							}
+							else if(p2[i-displace][j-displace] > 2){
+								p1[i-displace][j-displace] = 2;
+								if(p2[i-displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i+displace <= 7 && j+displace <= 7){
+							if(p1[i+displace][j+displace] > 2){
+								if(p1[i+displace][j+displace] == 3) p1[i+displace][j+displace] = 4;
+								break;
+							}
+							else if(p2[i+displace][j+displace] > 2){
+								p1[i+displace][j+displace] = 2;
+								if(p2[i+displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0 && i+displace <= 7){
+							if(p1[i+displace][j-displace] > 2){
+								if(p1[i+displace][j-displace] == 3) p1[i+displace][j-displace] = 4;
+								break;
+							}
+							else if(p2[i+ displace][j-displace] > 2){
+								p1[i+displace][j-displace] = 2;
+								if(p2[i+displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7 && i-displace >= 0){
+							if(p1[i-displace][j+displace] > 2){
+								if(p1[i-displace][j+displace] == 3) p1[i-displace][j+displace] = 4;
+								break;
+							}
+							else if(p2[i-displace][j+displace] > 2){
+								p1[i-displace][j+displace] = 2;
+								if(p2[i-displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "B", "blue") ){
+						int displace = 1;
+						while(i-displace >= 0 && j-displace >= 0){
+							if(p2[i-displace][j-displace] > 2){
+								if(p2[i-displace][j-displace] == 3) p2[i-displace][j-displace] = 4;
+								break;
+							}
+							else if(p1[i-displace][j-displace] > 2){
+								p2[i-displace][j-displace] = 2;
+								if(p1[i-displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i+displace <= 7 && j+displace <= 7){
+							if(p2[i+displace][j+displace] > 2){
+								if(p2[i+displace][j+displace] == 3) p2[i+displace][j+displace] = 4;
+								break;
+							}
+							else if(p1[i+displace][j+displace] > 2){
+								p2[i+displace][j+displace] = 2;
+								if(p1[i+displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0 && i+displace <= 7){
+							if(p2[i+displace][j-displace] > 2){
+								if(p2[i+displace][j-displace] == 3) p2[i+displace][j-displace] = 4;
+								break;
+							}
+							else if(p1[i+ displace][j-displace] > 2){
+								p2[i+displace][j-displace] = 2;
+								if(p1[i+displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7 && i-displace >= 0){
+							if(p2[i-displace][j+displace] > 2){
+								if(p2[i-displace][j+displace] == 3) p2[i-displace][j+displace] = 4;
+								break;
+							}
+							else if(p1[i-displace][j+displace] > 2){
+								p2[i-displace][j+displace] = 2;
+								if(p1[i-displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "Q", "red") ){
+						int displace = 1;
+						while(i-displace >= 0){
+							if(p1[i-displace][j] > 2){
+								if(p1[i-displace][j] == 3) p1[i-displace][j] = 4;
+								break;
+							}
+							else if(p2[i-displace][j] > 2){
+								p1[i-displace][j] = 2;
+								if(p2[i-displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j] = 2;
+								displace++;
+							}
+							
+						}
+						displace = 1;
+						while(i+displace <= 7){
+							if(p1[i+displace][j] > 2){
+								if(p1[i+displace][j] == 3) p1[i+displace][j] = 4;
+								break;
+							}
+							else if(p2[i+displace][j] > 2){
+								p1[i+displace][j] = 2;
+								if(p2[i+displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0){
+							if(p1[i][j-displace] > 2){
+								if(p1[i][j-displace] == 3) p1[i][j-displace] = 4;
+								break;
+							}
+							else if(p2[i][j-displace] > 2){
+								p1[i][j-displace] = 2;
+								if(p2[i][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7){
+							if(p1[i][j+displace] > 2){
+								if(p1[i][j+displace] == 3) p1[i][j+displace] = 4;
+								break;
+							}
+							else if(p2[i][j+displace] > 2){
+								p1[i][j+displace] = 2;
+								if(p2[i][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i-displace >= 0 && j-displace >= 0){
+							if(p1[i-displace][j-displace] > 2){
+								if(p1[i-displace][j-displace] == 3) p1[i-displace][j-displace] = 4;
+								break;
+							}
+							else if(p2[i-displace][j-displace] > 2){
+								p1[i-displace][j-displace] = 2;
+								if(p2[i-displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i+displace <= 7 && j+displace <= 7){
+							if(p1[i+displace][j+displace] > 2){
+								if(p1[i+displace][j+displace] == 3) p1[i+displace][j+displace] = 4;
+								break;
+							}
+							else if(p2[i+displace][j+displace] > 2){
+								p1[i+displace][j+displace] = 2;
+								if(p2[i+displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0 && i+displace <= 7){
+							if(p1[i+displace][j-displace] > 2){
+								if(p1[i+displace][j-displace] == 3) p1[i+displace][j-displace] = 4;
+								break;
+							}
+							else if(p2[i+ displace][j-displace] > 2){
+								p1[i+displace][j-displace] = 2;
+								if(p2[i+displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i+displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7 && i-displace >= 0){
+							if(p1[i-displace][j+displace] > 2){
+								if(p1[i-displace][j+displace] == 3) p1[i-displace][j+displace] = 4;
+								break;
+							}
+							else if(p2[i-displace][j+displace] > 2){
+								p1[i-displace][j+displace] = 2;
+								if(p2[i-displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p1[i-displace][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "Q", "blue") ){
+						int displace = 1;
+						while(i-displace >= 0){
+							if(p2[i-displace][j] > 2){
+								if(p2[i-displace][j] == 3) p2[i-displace][j] = 4;
+								break;
+							}
+							else if(p1[i-displace][j] > 2){
+								p2[i-displace][j] = 2;
+								if(p1[i-displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j] = 2;
+								displace++;
+							}
+							
+						}
+						displace = 1;
+						while(i+displace <= 7){
+							if(p2[i+displace][j] > 2){
+								if(p2[i+displace][j] == 3) p2[i+displace][j] = 4;
+								break;
+							}
+							else if(p1[i+displace][j] > 2){
+								p2[i+displace][j] = 2;
+								if(p1[i+displace][j] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0){
+							if(p2[i][j-displace] > 2){
+								if(p2[i][j-displace] == 3) p2[i][j-displace] = 4;
+								break;
+							}
+							else if(p1[i][j-displace] > 2){
+								p2[i][j-displace] = 2;
+								if(p1[i][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7){
+							if(p2[i][j+displace] > 2){
+								if(p2[i][j+displace] == 3) p2[i][j+displace] = 4;
+								break;
+							}
+							else if(p1[i][j+displace] > 2){
+								p2[i][j+displace] = 2;
+								if(p1[i][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i-displace >= 0 && j-displace >= 0){
+							if(p2[i-displace][j-displace] > 2){
+								if(p2[i-displace][j-displace] == 3) p2[i-displace][j-displace] = 4;
+								break;
+							}
+							else if(p1[i-displace][j-displace] > 2){
+								p2[i-displace][j-displace] = 2;
+								if(p1[i-displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(i+displace <= 7 && j+displace <= 7){
+							if(p2[i+displace][j+displace] > 2){
+								if(p2[i+displace][j+displace] == 3) p2[i+displace][j+displace] = 4;
+								break;
+							}
+							else if(p1[i+displace][j+displace] > 2){
+								p2[i+displace][j+displace] = 2;
+								if(p1[i+displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j+displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j-displace >= 0 && i+displace <= 7){
+							if(p2[i+displace][j-displace] > 2){
+								if(p2[i+displace][j-displace] == 3) p2[i+displace][j-displace] = 4;
+								break;
+							}
+							else if(p1[i+ displace][j-displace] > 2){
+								p2[i+displace][j-displace] = 2;
+								if(p1[i+displace][j-displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i+displace][j-displace] = 2;
+								displace++;
+							}
+						}
+						displace = 1;
+						while(j+displace <= 7 && i-displace >= 0){
+							if(p2[i-displace][j+displace] > 2){
+								if(p2[i-displace][j+displace] == 3) p2[i-displace][j+displace] = 4;
+								break;
+							}
+							else if(p1[i-displace][j+displace] > 2){
+								p2[i-displace][j+displace] = 2;
+								if(p1[i-displace][j+displace] == 5) check[i][j] = true;
+								break;
+							}
+							else{
+								p2[i-displace][j+displace] = 2;
+								displace++;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "K", "red") ){
+						for(int m=-1;m<2;m++){
+							for(int n=-1;n<2;n++){
+								if(i+m < 0 || i+m > 7 || j+n < 0 || j+n > 7) continue;
+								else if(p1[i+m][j+n] == 0){
+									p1[i+m][j+n] = -1;
+								}
+								else if(p1[i+m][j+n] == 3){
+									p1[i+m][j+n] = 4;
+								}
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "K", "blue") ){
+						for(int m=-1;m<2;m++){
+							for(int n=-1;n<2;n++){
+								if(i+m < 0 || i+m > 7 || j+n < 0 || j+n > 7) continue;
+								else if(p2[i+m][j+n] == 0){
+									p2[i+m][j+n] = -1;
+								}
+								else if(p2[i+m][j+n] == 3){
+									p2[i+m][j+n] = 4;
+								}
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "KN", "red") ){
+						if(j-2 >= 0){
+							if(i-1>=0){
+								if(p1[i-1][j-2] < 3){
+									p1[i-1][j-2] = 2;
+									if(p2[i-1][j-2] == 5) check[i][j] = true;
+								}
+								else if(p1[i-1][j-2] == 3) p1[i-1][j-2] = 4;
+							}
+							if(i+1<8){
+								if(p1[i+1][j-2] < 3){
+									p1[i+1][j-2] = 2;
+									if(p2[i+1][j-2] == 5) check[i][j] = true;
+								}
+								else if(p1[i+1][j-2] == 3) p1[i+1][j-2] = 4;
+							}
+						}
+						if(j-1 >= 0){
+							if(i-2>=0){
+								if(p1[i-2][j-1] < 3){
+									p1[i-2][j-1] = 2;
+									if(p2[i-2][j-1] == 5) check[i][j] = true;
+								}
+								else if(p1[i-2][j-1] == 3) p1[i-2][j-1] = 4;
+							}
+							if(i+2<8){
+								if(p1[i+2][j-1] < 3){
+									p1[i+2][j-1] = 2;
+									if(p2[i+2][j-1] == 5) check[i][j] = true;
+								}
+								else if(p1[i+2][j-1] == 3) p1[i+2][j-1] = 4;
+							}
+						}
+						if(j+1 < 8){
+							if(i-2>=0){
+								if(p1[i-2][j+1] < 3){
+									p1[i-2][j+1] = 2;
+									if(p2[i-2][j+1] == 5) check[i][j] = true;
+								}
+								else if(p1[i-2][j+1] == 3) p1[i-2][j+1] = 4;
+							}
+							if(i+2<8){
+								if(p1[i+2][j+1] < 3){
+									p1[i+2][j+1] = 2;
+									if(p2[i+2][j+1] == 5) check[i][j] = true;
+								}
+								else if(p1[i+2][j+1] == 3) p1[i+2][j+1] = 4;
+							}
+						}
+						if(j+2 < 8){
+							if(i-1>=0){
+								if(p1[i-1][j+2] < 3){
+									p1[i-1][j+2] = 2;
+									if(p2[i-1][j+2] == 5) check[i][j] = true;
+								}
+								else if(p1[i-1][j+2] == 3) p1[i-1][j+2] = 4;
+							}
+							if(i+1<8){
+								if(p1[i+1][j+2] < 3){
+									p1[i+1][j+2] = 2;
+									if(p2[i+1][j+2] == 5) check[i][j] = true;
+								}
+								else if(p1[i+1][j+2] == 3) p1[i+1][j+2] = 4;
+							}
+						}
+					}
+					if(board[i+1][j+1] == addColor( "KN", "blue") ){
+						if(j-2 >= 0){
+							if(i-1>=0){
+								if(p2[i-1][j-2] < 3){
+									p2[i-1][j-2] = 2;
+									if(p1[i-1][j-2] == 5) check[i][j] = true;
+								}
+								else if(p2[i-1][j-2] == 3) p2[i-1][j-2] = 4;
+							}
+							if(i+1<8){
+								if(p2[i+1][j-2] < 3){
+									p2[i+1][j-2] = 2;
+									if(p1[i+1][j-2] == 5) check[i][j] = true;
+								}
+								else if(p2[i+1][j-2] == 3) p2[i+1][j-2] = 4;
+							}
+						}
+						if(j-1 >= 0){
+							if(i-2>=0){
+								if(p2[i-2][j-1] < 3){
+									p2[i-2][j-1] = 2;
+									if(p1[i-2][j-1] == 5) check[i][j] = true;
+									
+								}
+								else if(p2[i-2][j-1] == 3) p2[i-2][j-1] = 4;
+							}
+							if(i+2<8){
+								if(p2[i+2][j-1] < 3){
+									p2[i+2][j-1] = 2;
+									if(p1[i+2][j-1] == 5) check[i][j] = true;
+								}
+								else if(p2[i+2][j-1] == 3) p2[i+2][j-1] = 4;
+							}
+						}
+						if(j+1 < 8){
+							if(i-2>=0){
+								if(p2[i-2][j+1] < 3){
+									p2[i-2][j+1] = 2;
+									if(p1[i-2][j+1] == 5) check[i][j] = true;
+								}
+								else if(p2[i-2][j+1] == 3) p2[i-2][j+1] = 4;
+							}
+							if(i+2<8){
+								if(p2[i+2][j+1] < 3){
+									p2[i+2][j+1] = 2;
+									if(p1[i+2][j+1] == 5) check[i][j] = true;
+								}
+								else if(p2[i+2][j+1] == 3) p2[i+2][j+1] = 4;
+							}
+						}
+						if(j+2 < 8){
+							if(i-1>=0){
+								if(p2[i-1][j+2] < 3){
+									p2[i-1][j+2] = 2;
+									if(p1[i-1][j+2] == 5) check[i][j] = true;
+								}
+								else if(p2[i-1][j+2] == 3) p2[i-1][j+2] = 4;
+							}
+							if(i+1<8){
+								if(p2[i+1][j+2] < 3){
+									p2[i+1][j+2] = 2;
+									if(p1[i+1][j+2] == 5) check[i][j] = true;
+								}
+								else if(p2[i+1][j+2] == 3) p2[i+1][j+2] = 4;
+							}
+						}
+					}
+				}
+			}
+			
+			for(int i=0;i<8;i++){	//returns 3 if player 1 in checkmate, 1 if in check
+				for(int j=0;j<8;j++){
+					if(p1[i][j] == 5){
+						if(p2[i][j] == 2){
+							for(int x=-1;x<2;x++){
+								for(int z=-1;z<2;z++){
+									if(x==0 && z==0 || i+x < 0 || i+x > 7 || j+z < 0 || j+z > 7) continue;
+									if((p2[i+x][j+z] == 0 || p2[i+x][j+z] == 1) && p1[i+x][j+z] < 3){
+										return 1;
+									}
+								}
+							}
+							int kingx = j, kingy = i,checkx,checky;
+							int count = 0;
+							for(int x=0;x<8;x++){
+								for(int z=0;z<8;z++){
+									if(check[x][z] == true){
+										count++;
+										if(count == 2) return 3;
+										checkx = z;
+										checky = x;
+									}
+								}
+							}
+							if(board[checky][checkx] == addColor( "P", "blue")  || board[checky][checkx] == addColor( "KN", "blue") ){
+								if(p1[checky][checkx] == -1 && p2[checky][checkx] == 3) return 1;
+								else if(p1[checky][checkx] == 2) return 1;
+							}
+							else{
+								if(p1[checky][checkx] == -1 && p2[checky][checkx] == 3) return 1;
+								if(p1[checky][checkx] == 2) return 1;
+								else{
+									if(checkx-kingx == 0){
+										if(checky-kingy > 0){
+											int displace = 1;
+											while(checky-displace > kingy){
+												if(p1[checky-displace][checkx] == 2 || p1[checky-displace][checkx] == 1) return 1;
+												displace++;
+											}
+										}
+										else{
+											int displace = 1;
+											while(checky+displace < kingy){
+												if(p1[checky+displace][checkx] == 2 || p1[checky+displace][checkx] == 1) return 1;
+												displace++;
+											}
+										}
+									}
+									else if(checky-kingy == 0){
+										if(checkx-kingx > 0){
+											int displace = 1;
+											while(checkx-displace > kingx){
+												if(p1[checky][checkx-displace] == 2 || p1[checky][checkx-displace] == 1) return 1;
+												displace++;
+											}
+										}
+										else{
+											int displace = 1;
+											while(checkx+displace < kingx){
+												if(p1[checky][checkx+displace] == 2 || p1[checky][checkx+displace] == 1) return 1;
+												displace++;
+											}
+										}
+									}
+									else if(checky-kingy > 0 && checkx - kingx > 0){
+										int displace = 1;
+										while(checkx-displace > kingx){
+											if(p1[checky-displace][checkx-displace] == 2 || p1[checky-displace][checkx-displace] == 1) return 1;
+											displace++;
+										}
+									}
+									else if(checky-kingy < 0 && checkx-kingx > 0){
+										int displace = 1;
+										while(checkx-displace > kingx){
+											if(p1[checky+displace][checkx-displace] == 2 || p1[checky+displace][checkx-displace] == 1) return 1;
+											displace++;
+										}
+									}
+									else if(checky-kingy > 0 && checkx-kingx < 0){
+										int displace = 1;
+										while(checkx+displace < kingx){
+											if(p1[checky-displace][checkx+displace] == 2 || p1[checky-displace][checkx+displace] == 1) return 1;
+											displace++;
+										}
+									}
+									else if(checky-kingy < 0 && checkx-kingx < 0){
+										int displace = 1;
+										while(checkx+displace < kingx){
+											if(p1[checky+displace][checkx+displace] == 2 || p1[checky+displace][checkx+displace] == 1) return 1;
+											displace++;
+										}
+									}
+								}
+							}
+							return 3;
+						}
+					}
+				}
+			}
+		}
+    */
     
     void checkMate(){
         
