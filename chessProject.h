@@ -458,10 +458,10 @@ public:
 			
 			for(int i=0;i<8;i++){	//player 1 pieces
 				for(int j=0;j<8;j++){
-					if(board[i+1][j+1].compare("K1") == 0){
+					if(board[i+1][j+1] == addColor("K", "red")){
 						p1[i][j] = 5;
 					}
-					else if(board[i+1][j+1].compare("P1") == 0 || board[i+1][j+1].compare("R1") == 0 || board[i+1][j+1].compare("KN1") == 0 || board[i+1][j+1].compare("B1") == 0 || board[i+1][j+1].compare("Q1") == 0){
+					else if(board[i+1][j+1] == addColor( "P", "red")  || board[i+1][j+1] == addColor( "R", "red")  || board[i+1][j+1] == addColor( "KN", "red")  || board[i+1][j+1] == addColor( "B", "red")  || board[i+1][j+1] == addColor( "Q", "red") ){
 						p1[i][j] = 3;
 					}
 					else{
@@ -472,10 +472,10 @@ public:
 			
 			for(int i=0;i<8;i++){	//player 2 pieces
 				for(int j=0;j<8;j++){
-					if(board[i+1][j+1].compare("K2") == 0){
+					if(board[i+1][j+1] == addColor( "K", "blue") ){
 						p2[i][j] = 5;
 					}
-					else if(board[i+1][j+1].compare("P2") == 0 || board[i+1][j+1].compare("R2") == 0 || board[i+1][j+1].compare("KN2") == 0 || board[i+1][j+1].compare("B2") == 0 || board[i+1][j+1].compare("Q2") == 0){
+					else if(board[i+1][j+1] == addColor( "P", "blue")  || board[i+1][j+1] == addColor( "R", "blue")  || board[i+1][j+1] == addColor( "KN", "blue")  || board[i+1][j+1] == addColor( "B", "blue")  || board[i+1][j+1] == addColor( "Q", "blue") ){
 						p2[i][j] = 3;
 					}
 					else{
@@ -486,7 +486,7 @@ public:
 			
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){	//creates maps of possible moves for each player
-					if(board[i+1][j+1].compare("P1") == 0){
+					if(board[i+1][j+1] == addColor( "P", "red") ){
 						if(p2[i+1][j] < 3 && p1[i+1][j] < 3 && p2[i+2][j] < 3 && p1[i+2][j] < 2){
 							p1[i+2][j] = 1;
 						}
@@ -520,7 +520,7 @@ public:
 							else if(p1[i+1][j-1] == 3) p1[i+1][j-1] = 4;
 						}
 					}
-					if(board[i+1][j+1].compare("P2") == 0){
+					if(board[i+1][j+1] == addColor( "P", "blue") ){
 						if(p2[i-1][j] < 3 && p1[i-1][j] < 3 && p2[i-2][j] < 2 && p1[i-2][j] < 3){
 							p2[i-2][j] = 1;
 						}
@@ -554,7 +554,7 @@ public:
 							else if(p2[i-1][j-1] == 3) p2[i-1][j-1] = 4;
 						}
 					}
-					if(board[i+1][j+1].compare("R1") == 0){
+					if(board[i+1][j+1] == addColor( "R", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
 							if(p1[i-displace][j] > 2){
@@ -621,7 +621,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("R2") == 0){
+					if(board[i+1][j+1] == addColor( "R", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0){
 							if(p2[i-displace][j] > 2){
@@ -688,7 +688,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("B1") == 0){
+					if(board[i+1][j+1] == addColor( "B", "red") ){
 						int displace = 1;
 						while(i-displace >= 0 && j-displace >= 0){
 							if(p1[i-displace][j-displace] > 2){
@@ -754,7 +754,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("B2") == 0){
+					if(board[i+1][j+1] == addColor( "B", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0 && j-displace >= 0){
 							if(p2[i-displace][j-displace] > 2){
@@ -820,7 +820,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("Q1") == 0){
+					if(board[i+1][j+1] == addColor( "Q", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
 							if(p1[i-displace][j] > 2){
@@ -951,7 +951,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("Q2") == 0){
+					if(board[i+1][j+1] == addColor( "Q", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0){
 							if(p2[i-displace][j] > 2){
@@ -1082,7 +1082,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("K1") == 0){
+					if(board[i+1][j+1] == addColor( "K", "red") ){
 						for(int m=-1;m<2;m++){
 							for(int n=-1;n<2;n++){
 								if(i+m < 0 || i+m > 7 || j+n < 0 || j+n > 7) continue;
@@ -1095,7 +1095,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("K2") == 0){
+					if(board[i+1][j+1] == addColor( "K", "blue") ){
 						for(int m=-1;m<2;m++){
 							for(int n=-1;n<2;n++){
 								if(i+m < 0 || i+m > 7 || j+n < 0 || j+n > 7) continue;
@@ -1108,7 +1108,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("KN1") == 0){
+					if(board[i+1][j+1] == addColor( "KN", "red") ){
 						if(j-2 >= 0){
 							if(i-1>=0){
 								if(p1[i-1][j-2] < 3){
@@ -1174,7 +1174,7 @@ public:
 							}
 						}
 					}
-					if(board[i+1][j+1].compare("KN2") == 0){
+					if(board[i+1][j+1] == addColor( "KN", "blue") ){
 						if(j-2 >= 0){
 							if(i-1>=0){
 								if(p2[i-1][j-2] < 3){
@@ -1268,7 +1268,7 @@ public:
 									}
 								}
 							}
-							if(board[checky][checkx].compare("P2") == 0 || board[checky][checkx].compare("KN2") == 0){
+							if(board[checky][checkx] == addColor( "P", "blue")  || board[checky][checkx] == addColor( "KN", "blue") ){
 								if(p1[checky][checkx] == -1 && p2[checky][checkx] == 3) return 1;
 								else if(p1[checky][checkx] == 2) return 1;
 							}

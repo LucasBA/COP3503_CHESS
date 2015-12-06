@@ -161,6 +161,12 @@ int main(){
 					
 					
 				}
+				if (newBoard.check() == 2){
+					cout << "Player 2 is in check" << endl;
+				}
+				else if (newBoard.check() == 4){
+					cout << "Player 2, checkmate." << endl;
+				}
 				
 				while (playerTwo ==  true){
 					playerNumber = 2;
@@ -177,7 +183,12 @@ int main(){
 					
 					
 				}
-				
+				if (newBoard.check() == 1){
+					cout << "Player 1 is in check" << endl;
+				}
+				else if (newBoard.check() == 3){
+					cout << "Player 1, checkmate." << endl;
+				}
                 
             }
             
