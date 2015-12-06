@@ -303,10 +303,10 @@ public:
         
         parsingNameOfPiece = board [rowPre] [columnPre];
         if (parsingNameOfPiece[5]*4==208){			//Check if color is blue
-            cout<<"true";
+            //<<"true";
             return true;
         }
-        cout<<"false";
+        //cout<<"false";
         return false;
     }
     
