@@ -1469,13 +1469,23 @@ public:
 			return 0;
 		}
     
+    /*
+     getMoveSpot takes in input strings from the user and parses them using the substring
+     function to find integer coordinates. It also validates input by checking the length 
+     of the input string and the length of both input string with the checker variable.
+     */
     bool getMoveSpot(string moveStringPre, string moveStringAfter, int& rowPre, int& columnPre, int& rowAfter, int& columnAfter){
-        int checker = 0; // Checking if it gets both row and column
         
+        // Checking if it gets both row and column
+        int checker = 0;
+        
+        // Checks if input strings are the right length.
         if(moveStringPre.length() != 2 || moveStringAfter.length() != 2){
             cout<< "Wrong format. Write one number and one letter like this: 1A.\n";
             return false;
         }
+        
+        //Sets integer part of string to integer values.
         else{
             if((moveStringPre.substr(0,1)) == "1"){
                 rowPre = 1;
@@ -1543,7 +1553,7 @@ public:
                 checker++;
             }
             
-            
+            // Sets letter part of string to integer values
             if((moveStringPre.substr(1,1) == "A") || (moveStringPre.substr(1,1) == "a")){
                 columnPre = 1;
                 checker++;
@@ -1611,14 +1621,21 @@ public:
             }
         }
         
+        //checks if input is the right length
         if (checker == 4){
 			return true;
 		}
 		else{
-			cout << "A value is off" << endl;
+			cout << "Wrong format. Write one number and one letter like this: 1A.\n";
 			return false;
 		}
     }
+   
+    /*
+    isPathClear loops through all straight path types and checks if there are peices in the way
+    for peices that can't jump. If while looping it finds a spot not equal to the string "SPACE"
+    (indicating there is a piece there) the function will return false, otherwise it returns true.
+    */
     
     bool isPathClear(int rowPre, int columnPre, int rowAfter, int columnAfter){
         
