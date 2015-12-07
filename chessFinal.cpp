@@ -3,34 +3,49 @@
 #include <iostream>
 #include <string>
 
-
+//To avoid the excess use of standard
 using namespace std;
 
+//The chess game's main class
 int main(){
+	
+	//menu slection area
     bool exit = false;
     int menuSelection;
     string playerOneName;
     string playerTwoName;
 
-
+	//The main loop for the entire menu
     while (exit != true){
-		cout << "\n\n";
+		
+		//The menu output setup
+		cout << "\n\n\n";
         cout << "MAIN MENU" << endl;
         cout << endl;
+        cout << "*** PLEASE SET THE SCREEN TO MAX FOR OPTIMUM VIEWING ***" << "\n\n\n";
         cout << "Please select an option (1, 2, 0). Choice: " << endl;
         cout << endl;
         cout << "1: Rules of chess" << endl;
         cout << "2: A game of chess" << endl;
         cout << "0: Exit" << endl;
         cout << endl;
-        cin >> menuSelection;
+        cin >> menuSelection; // Menu input
+        
+        //the other way to exit instead of ctrl c
         if (menuSelection == 0){
             exit = true;
         }
+        
+        //Leads to the chess rules
         else if (menuSelection == 1) {
+			
+			//Chess rule options
 			int chessrules;
+			
+			//Loop for navigating through chess rule menu
 			while (chessrules != 4){
 				
+				//State what each choces are
 				cout << endl;
 				cout << "RULES OF CHESS \n" << endl;
 				cout << "Please choose an option" << endl;
@@ -117,31 +132,41 @@ int main(){
 				}
 				else if (chessrules == 4){
 				}
+				
+				//exit
 				else{
 					cout <<"Please enter a choice between 1-4. The choice 4 to exit" << endl;
 				}
 			}
 		}
+		
+		//This is the area for the actual game
         else if (menuSelection == 2){
+			
             bool gameFinished = false;
             chessBoard newBoard;
             newBoard.getBoard();
+            
             cout << endl;
             cout << "Enter player one's name: ";
-            cin >> playerOneName;
+            cin >> playerOneName; //enters playerone name
             cout << endl;
             cout << "Enter player two's name: ";
-            cin >> playerTwoName;
+            cin >> playerTwoName; //enter player two name
             cout << endl;
             
             cout << "\t\t\t\t-START-" << endl;
             cout << endl;
-            newBoard.setUpBoard();
-            cout << "Please enter which piece you would like to move by coordinates." << endl;
             
+            newBoard.setUpBoard(); //Picecs are set up
+            
+            cout << "Please enter which piece you would like to move by coordinates." << endl;            
             cout << "Example: \"Move piece \"1a\" to \"2a\"." << endl;
             
+            //GAME START
             int playerNumber = 1;
+            
+            //Loop for changing between players
             while (gameFinished != true){
                 int rowPre;
                 int columnPre;
@@ -151,6 +176,7 @@ int main(){
                 
                 newBoard.getBoard();
                 
+                //Player num 1
                 if(playerNumber == 1){
 					
 					string moveStringPre = "";
@@ -161,33 +187,42 @@ int main(){
 				
 					cout << "to ";
 					cin>> moveStringAfter;
-					cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";			
+					cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";	
+					
+					//Input validation of spot of piece		
 					if (!newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid Input.\n";
 						continue;				
 					}
 					
+					//Input validation of move of piece		
 					if(!newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid move\n";
 						continue;
 					}
 					
+					//Checking for checkmate
 					if (newBoard.check() == 2){
 					cout << "Player 2 is in check" << endl;
 					}
+					
 					else if (newBoard.check() == 4){
 						cout << "Checkmate. " << playerOneName << " wins!" << endl;
 						gameFinished = true;
 						newBoard.getBoard();
 						continue;
 					}
+					
 					else if (newBoard.check() == 6){
 						cout << "No possible moves left. The game is a tie!\n";
 					}
+					
+					//TO the next player
 					playerNumber++;
 					continue;
 				}
 				
+				//Player two options
 				if(playerNumber == 2){
 					
 					string moveStringPre = "";
@@ -199,16 +234,20 @@ int main(){
 					cout << "to ";
 					cin>> moveStringAfter;
 					cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+					
+					//Input validation of spot of piece	
 					if (!newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid input.\n";
 						continue;			
 					}
 					
+					//Input validation of move of piece	
 					if(!newBoard.movePiece(playerNumber, rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid move\n";
 						continue;
 					}
 					
+					//Checking for checkmate functions 
 					if (newBoard.check() == 2){
 					cout << "Player 1 is in check" << endl;
 					}
@@ -222,6 +261,7 @@ int main(){
 						cout << "No possible moves left. The game is a tie!\n";
 					}
 					
+					//TO the next player
 					playerNumber--;
 					continue;
 				}
@@ -229,10 +269,13 @@ int main(){
             }
             
         }
+        
+        //Input validation
         else{
             cout << "Please enter a valid choice. Try again." << endl;
         }
     }
     
+    //exit
     return 0;
 }
