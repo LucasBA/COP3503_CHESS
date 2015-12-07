@@ -161,7 +161,7 @@ int main(){
 				
 					cout << "to ";
 					cin>> moveStringAfter;
-											
+					cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";			
 					if (!newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid Input.\n";
 						continue;				
@@ -195,7 +195,7 @@ int main(){
 				
 					cout << "to ";
 					cin>> moveStringAfter;
-											
+					cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
 					if (!newBoard.getMoveSpot(moveStringPre, moveStringAfter,rowPre, columnPre, rowAfter, columnAfter)){
 						cout << "Invalid input.\n";
 						continue;			
