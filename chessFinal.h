@@ -314,22 +314,25 @@ public:
         return false;
     }
     
+	//Checks if the piece at specified location is player one's piece.
     bool pieceP1(int rowPre, int columnPre){
         string parsingNameOfPiece;
         
         parsingNameOfPiece = board [rowPre] [columnPre];
-        if (parsingNameOfPiece[5]*4==196){			//Check if color is red
+		//Check if color is red
+        if (parsingNameOfPiece[5]*4==196){			
             return true;
         }
         return false;
-        
     }
     
+	//Checks if the piece at specified location is player two's piece.
     bool pieceP2(int rowPre, int columnPre){
         string parsingNameOfPiece;
         
         parsingNameOfPiece = board [rowPre] [columnPre];
-        if (parsingNameOfPiece[5]*4==208){			//Check if color is blue
+		//Check if color is blue
+        if (parsingNameOfPiece[5]*4==208){			
             return true;
         }
         return false;
