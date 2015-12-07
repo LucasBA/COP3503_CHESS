@@ -703,7 +703,7 @@ public:
 	}
     
     
-    //Very abstract
+    //Very abstract. Thought of by Tyler Armstrong
      //check function
     //Returns 1 if PLAYER 1 is in check, 2 if PLAYER 2 is in check,
 	//3 if PLAYER 1 is in check mate, 4 if PLAYER 2 is in check mate
@@ -2071,6 +2071,8 @@ public:
         string color;
         int row;
         
+        cout << endl;
+        
         //Promotes player 2 pawns
         if (player == 2){
             cout<<"PLAYER2";
@@ -2093,23 +2095,28 @@ public:
         
         //Loop allowing one to pick a piece
         while (inputVal != true){
-			int selection;
+			string selection;
 			cout<< "Enter a number to indicate which piece type to swap with pawn"<<endl;
 			cout<< "1.B, 2.KN, 3.Q, 4.R"<<endl;
 			cin>> selection;
 			
+			//Input validation also placed so loop is not infinite
 			//The selection of a piece
-			if (selection==1){
+			if (selection=="1"){
 				board [row][column] = addColor("B", color);
+				inputVal = true;
 			}
-			else if (selection==2){
+			else if (selection=="2"){
 				board [row][column] = addColor("KN", color);
+				inputVal = true;
 			}
-			else if (selection==3){
+			else if (selection=="3"){
 				board [row][column] = addColor("Q", color);
+				inputVal = true;
 			}
-			else if (selection==4){
+			else if (selection=="4"){
 				board [row][column] = addColor("R", color);
+				inputVal = true;
 			}
 			else {
 				cout << "Please enter a proper choice (1-4)" << endl;

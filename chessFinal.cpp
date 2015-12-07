@@ -162,6 +162,8 @@ int main(){
             
             cout << "Please enter which piece you would like to move by coordinates." << endl;            
             cout << "Example: \"Move piece \"1a\" to \"2a\"." << endl;
+            cout << "To castle, please move the desired King piece to the spot" << endl;
+            cout << "\n\n";
             
             //GAME START
             int playerNumber = 1;
