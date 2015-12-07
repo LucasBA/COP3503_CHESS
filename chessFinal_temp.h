@@ -1,3 +1,4 @@
+
 #ifndef CHESSFINAL_H
 #define CHESSFINAL_H
 
@@ -119,8 +120,6 @@ public:
     }
     
     bool movePiece(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter){
-		if((board[rowPre][columnPre] == addColor("P","red")) && this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) && rowAfter == 8) return true;
-		if((board[rowPre][columnPre] == addColor("P","blue")) && this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) && rowAfter == 1) return true;
         if (this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true){
 			string ptemp = board[rowAfter][columnAfter];
             board [rowAfter] [columnAfter] = board [rowPre] [columnPre];
@@ -142,14 +141,9 @@ public:
         
         //Check to see if own piece is at the after point
         if (piece == addColor("P" , "red") && playerNumber == 1){
-<<<<<<< HEAD
-			if (this->pieceP1(rowAfter, columnAfter)) {	//Makes sure that P1's piece cannot take P1's piece.
-				return false;
-=======
 			//Makes sure that P1's piece cannot take P1's piece.
 			if (this->pieceP1(rowAfter, columnAfter)) {	
 						return false;
->>>>>>> 26e3591e3cdf86a2fd86c92eccebf3897cbbb228
 			}
 			//If the pawn follows its moveset and there is nothing in its path, the move is legal.
             if (this -> pawnConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true){
@@ -344,33 +338,6 @@ public:
         return false;
     }
     
-<<<<<<< HEAD
-    bool pawnConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter){
-        int logicMoveRow;
-        int logicMoveColumn;
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        if(!(board[rowPre][columnPre] == addColor("P","red"))) return false;
-        
-        if (logicMoveRow == 2 && columnPre == columnAfter) {			//P1 pawns can move 2 spaces if they are at row 2
-            if (rowPre == 2 && columnPre == columnAfter) {				
-				if (pieceP2(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-					return false;
-				}
-                if (rowAfter==8){return offerPawnSwap(1,columnAfter,rowPre,columnPre);}
-
-                return true;
-            }
-        }
-        else if (logicMoveRow == 1 && board [rowAfter] [columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1)){
-        if (rowAfter==8){return offerPawnSwap(1,columnAfter,rowPre,columnPre);}
-
-            return true;
-            //May need to check to see if opponents piece is taken.
-        }
-        else if (logicMoveRow == 1 && columnPre == columnAfter){		//Otherwise, they only move 1 space forward
-			if (pieceP2(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-=======
 	bool pawnConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
@@ -402,7 +369,6 @@ public:
 			//Makes sure pawns can't take what's in front of them
 			if (pieceP2(rowAfter, columnAfter)) {
 				cout << "A";
->>>>>>> 26e3591e3cdf86a2fd86c92eccebf3897cbbb228
 				return false;
 			}
 			//If the pawn makes it to the other side of the board, allow a pawn swap.
@@ -425,104 +391,6 @@ public:
 		//Knight can only move in an 'L' pattern
 		if (logicMoveRow == 2 && logicMoveColumn == 1) {
 			return true;
-<<<<<<< HEAD
-        }
-        return false;
-    }
-    
-    bool knightConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        int logicMoveRow;
-        int logicMoveColumn;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        
-        if (logicMoveRow == 2 && logicMoveColumn == 1) {				//Knight can only move in an 'L' pattern
-            return true;
-        }
-        else if (logicMoveRow == 2 && logicMoveColumn == -1) {
-            return true;
-        }
-        else if (logicMoveRow == -2 && logicMoveColumn == 1) {
-            return true;
-        }
-        else if (logicMoveRow == -2 && logicMoveColumn == -1) {
-            return true;
-        }
-        return false;
-    }
-    
-    bool rookConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        int logicMoveRow;
-        int logicMoveColumn;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        
-        if (logicMoveRow > 0 && logicMoveRow <= 7 && columnAfter == columnPre) {			//Rook can only change either column or row, up to 7 spaces
-            return true;
-        }
-        else if (logicMoveRow >= -7 && logicMoveRow < 0 && columnAfter == columnPre) {
-            return true;
-        }
-        else if (logicMoveColumn > 0 && logicMoveColumn <= 7 && rowAfter == rowPre) {
-            return true;
-        }
-        else if (logicMoveColumn >= -7 && logicMoveColumn < 0 && rowAfter == rowPre) {
-            return true;
-        }
-        return false;
-    }
-    
-    bool bishopConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        int logicMoveRow;
-        int logicMoveColumn;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        
-        if (logicMoveRow >= 1 && logicMoveRow <= 7 && logicMoveColumn == logicMoveRow) {	//Bishop moves a horizontal distance equal to the vertical distance
-            return true;
-        }
-        if (logicMoveRow <= -1 && logicMoveRow >= -7 && logicMoveColumn == logicMoveRow) {
-            return true;
-        }
-        if (logicMoveRow >= 1 && logicMoveRow <= 7 && logicMoveColumn == -logicMoveRow) {
-            return true;
-        }
-        if (logicMoveRow <= -1 && logicMoveRow >= -7 && logicMoveColumn == -logicMoveRow) {
-            return true;
-        }
-        return false;
-    }
-    
-    bool queenConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        return true;
-    }
-    
-    bool kingConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs check if piece was taken
-        int logicMoveRow;
-        int logicMoveColumn;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        
-        if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {		//King can only move 1 space in any direction
-            return true;
-        }
-        return false;
-    }
-    bool pawnConstraintsP2(int rowPre, int columnPre, int rowAfter, int columnAfter) { //Still needs to check if pieces are in the way
-        int logicMoveRow;
-        int logicMoveColumn;
-        if(!(board[rowPre][columnPre] == addColor("P","blue"))) return false;
-        
-        logicMoveRow = rowAfter - rowPre;
-        logicMoveColumn = columnAfter - columnPre;
-        if (logicMoveRow == -2 && columnPre == columnAfter) {
-            if (rowPre == 7 && columnPre == columnAfter) {				//P2 pawns can move 2 spaces if they are at row 7
-				if (pieceP1(rowAfter, columnAfter)) {					//Makes sure pawns can't take what's in front of them
-=======
 		}
 		else if (logicMoveRow == 2 && logicMoveColumn == -1) {
 			return true;
@@ -535,7 +403,6 @@ public:
 		}
 		return false;
 	}
->>>>>>> 26e3591e3cdf86a2fd86c92eccebf3897cbbb228
 
 	bool rookConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
