@@ -500,6 +500,8 @@ public:
 		return false;
 	}
 
+	//knight's constraints
+    //Still needs check if piece was taken
 	bool knightConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
@@ -511,18 +513,23 @@ public:
 		if (logicMoveRow == 2 && logicMoveColumn == 1) {
 			return true;
 		}
+		
 		else if (logicMoveRow == 2 && logicMoveColumn == -1) {
 			return true;
 		}
+		
 		else if (logicMoveRow == -2 && logicMoveColumn == 1) {
 			return true;
 		}
+		
 		else if (logicMoveRow == -2 && logicMoveColumn == -1) {
 			return true;
 		}
 		return false;
 	}
 
+	//rook's constraints
+    //Still needs check if piece was taken
 	bool rookConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
@@ -534,18 +541,23 @@ public:
 		if (logicMoveRow > 0 && logicMoveRow <= 7 && columnAfter == columnPre) {
 			return true;
 		}
+		
 		else if (logicMoveRow >= -7 && logicMoveRow < 0 && columnAfter == columnPre) {
 			return true;
 		}
+		
 		else if (logicMoveColumn > 0 && logicMoveColumn <= 7 && rowAfter == rowPre) {
 			return true;
 		}
+		
 		else if (logicMoveColumn >= -7 && logicMoveColumn < 0 && rowAfter == rowPre) {
 			return true;
 		}
 		return false;
 	}
 
+	//bishop's constraints
+    //Still needs check if piece was taken
 	bool bishopConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
@@ -557,22 +569,30 @@ public:
 		if (logicMoveRow >= 1 && logicMoveRow <= 7 && logicMoveColumn == logicMoveRow) {
 			return true;
 		}
+		
 		if (logicMoveRow <= -1 && logicMoveRow >= -7 && logicMoveColumn == logicMoveRow) {
 			return true;
 		}
+		
 		if (logicMoveRow >= 1 && logicMoveRow <= 7 && logicMoveColumn == -logicMoveRow) {
 			return true;
 		}
+		
 		if (logicMoveRow <= -1 && logicMoveRow >= -7 && logicMoveColumn == -logicMoveRow) {
 			return true;
 		}
+		
 		return false;
 	}
 
+	 //queen's constraints
+    //Still needs check if piece was taken
 	bool queenConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		return true;
 	}
 
+    //king's constraints
+    //Still needs check if piece was taken
 	bool kingConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
@@ -586,19 +606,25 @@ public:
 		}
 		return false;
 	}
+	
+	//Still needs to check if pieces are in the way
+    //player two's pawn's constraints
 	bool pawnConstraintsP2(int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
 
 		logicMoveRow = rowAfter - rowPre;
 		logicMoveColumn = columnAfter - columnPre;
+		
 		//P2 pawns can move 2 spaces if they are at row 7
 		if (logicMoveRow == -2 && columnPre == columnAfter) {
 			if (rowPre == 7 && columnPre == columnAfter) {
+				
 				//Makes sure pawns can't take what's in front of them
 				if (pieceP1(rowAfter, columnAfter)) {
 					return false;
 				}
+				
 				//If the pawn makes it to the other side of the board, allow a pawn swap.
 				if (rowAfter == 1) {
 					return offerPawnSwap(2, columnAfter, rowPre, columnPre);
@@ -606,20 +632,25 @@ public:
 				return true;
 			}
 		}
+		
 		else if (logicMoveRow == -1 && board[rowAfter][columnAfter] != "SPACE" && (logicMoveColumn == 1 || logicMoveColumn == -1))
 		{
+			
 			//If the pawn makes it to the other side of the board, allow a pawn swap.
 			if (rowAfter == 1) {
 				return offerPawnSwap(2, columnAfter, rowPre, columnPre);
 			}
 			return true;
 		}
+		
 		//Otherwise, they only move 1 space forward
 		else if (logicMoveRow == -1 && columnPre == columnAfter) {
+			
 			//Makes sure pawns can't take what's in front of them
 			if (pieceP1(rowAfter, columnAfter)) {
 				return false;
 			}
+			
 			//If the pawn makes it to the other side of the board, allow a pawn swap.
 			if (rowAfter == 1) {
 				return offerPawnSwap(2, columnAfter, rowPre, columnPre);
@@ -629,29 +660,36 @@ public:
 		return false;
 	}
     
-    int check(){ 			//Returns 1 if PLAYER 1 is in check, 2 if PLAYER 2 is in check,
-								//3 if PLAYER 1 is in check mate, 4 if PLAYER 2 is in check mate
-								//returns 0 otherwise
+     //check function
+    //Returns 1 if PLAYER 1 is in check, 2 if PLAYER 2 is in check,
+	//3 if PLAYER 1 is in check mate, 4 if PLAYER 2 is in check mate
+	//returns 0 otherwise
+    int check(){ 			
 							   
 			int p1[8][8] = {0};
 			int p2[8][8] = {0};
 			bool check[8][8] = {false};
 			
-			for(int i=0;i<8;i++){	//player 1 pieces
+			//player 1 pieces
+			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
+					
 					if(board[i+1][j+1] == addColor("K", "red")){
 						p1[i][j] = 5;
 					}
+					
 					else if(board[i+1][j+1] == addColor( "P", "red")  || board[i+1][j+1] == addColor( "R", "red")  || board[i+1][j+1] == addColor( "KN", "red")  || board[i+1][j+1] == addColor( "B", "red")  || board[i+1][j+1] == addColor( "Q", "red") ){
 						p1[i][j] = 3;
 					}
+					
 					else{
 						p1[i][j] = 0;
 					}
 				}
 			}
 			
-			for(int i=0;i<8;i++){	//player 2 pieces
+			//player 2 pieces
+			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(board[i+1][j+1] == addColor( "K", "blue") ){
 						p2[i][j] = 5;
@@ -665,15 +703,20 @@ public:
 				}
 			}
 			
+			//creates maps of possible moves for each player
 			for(int i=0;i<8;i++){
-				for(int j=0;j<8;j++){	//creates maps of possible moves for each player
+				for(int j=0;j<8;j++){	
+					
 					if(board[i+1][j+1] == addColor( "P", "red") ){
+						
 						if(p2[i+1][j] < 3 && p1[i+1][j] < 3 && p2[i+2][j] < 3 && p1[i+2][j] < 2){
 							p1[i+2][j] = 1;
 						}
+						
 						if(p2[i+1][j] < 3 && p1[i+1][j] == 0){
 							p1[i+1][j] = 1;
 						}
+						
 						if(i==0){
 							if(p2[i+1][j+1] > 2){
 								p1[i+1][j+1] = 2;
@@ -681,6 +724,7 @@ public:
 							}
 							else if(p1[i+1][j+1] == 3) p1[i+1][j+1] = 4;
 						}
+						
 						else if(i==7){
 							if(p2[i+1][j-1] > 2){
 								p1[i+1][j-1] = 2;
@@ -688,6 +732,7 @@ public:
 							}
 							else if(p1[i+1][j-1] == 3) p1[i+1][j-1] = 4;
 						}
+						
 						else{
 							if(p2[i+1][j+1] > 2){
 								p1[i+1][j+1] = 2;
@@ -701,6 +746,7 @@ public:
 							else if(p1[i+1][j-1] == 3) p1[i+1][j-1] = 4;
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "P", "blue") ){
 						if(p2[i-1][j] < 3 && p1[i-1][j] < 3 && p2[i-2][j] < 2 && p1[i-2][j] < 3){
 							p2[i-2][j] = 1;
@@ -735,6 +781,7 @@ public:
 							else if(p2[i-1][j-1] == 3) p2[i-1][j-1] = 4;
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "R", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -802,6 +849,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "R", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -869,6 +917,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "B", "red") ){
 						int displace = 1;
 						while(i-displace >= 0 && j-displace >= 0){
@@ -935,6 +984,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "B", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0 && j-displace >= 0){
@@ -1001,6 +1051,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "Q", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -1132,6 +1183,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "Q", "blue") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -1263,6 +1315,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "K", "red") ){
 						for(int m=-1;m<2;m++){
 							for(int n=-1;n<2;n++){
@@ -1276,6 +1329,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "K", "blue") ){
 						for(int m=-1;m<2;m++){
 							for(int n=-1;n<2;n++){
@@ -1289,6 +1343,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "KN", "red") ){
 						if(j-2 >= 0){
 							if(i-1>=0){
@@ -1355,6 +1410,7 @@ public:
 							}
 						}
 					}
+					
 					if(board[i+1][j+1] == addColor( "KN", "blue") ){
 						if(j-2 >= 0){
 							if(i-1>=0){
@@ -1424,8 +1480,9 @@ public:
 					}
 				}
 			}
-
-			for(int i=0;i<8;i++){	//returns 3 if player 1 in checkmate, 1 if in check
+			
+			//returns 3 if player 1 in checkmate, 1 if in check
+			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(p1[i][j] == 5){
 						if(p2[i][j] == 2){
@@ -1525,7 +1582,8 @@ public:
 				}
 			}
 			
-			for(int i=0;i<8;i++){	//returns 3 if player 1 in checkmate, 1 if in check
+			//returns 4 if player 2 in checkmate, 2 if in check
+			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(p2[i][j] == 5){
 						if(p1[i][j] == 2){
@@ -1902,9 +1960,13 @@ public:
         }
         return true;
     }
+    
+    //Promotion function
     bool offerPawnSwap(int player, int column, int rowPre, int columnPre){
         string color;
         int row;
+        
+        //Promotes player 2 pawns
         if (player == 2){
             cout<<"PLAYER2";
             row = 1;
@@ -1912,28 +1974,42 @@ public:
             board [rowPre] [columnPre] = "SPACE";
 
         }        
+        
+        //Promotes player 1 pawns
         else if (player == 1){
             cout<<"PLAYER1";
             row = 8;
             color = "red";
             board [rowPre] [columnPre] = "SPACE";
         }
-        int selection;
-        cout<< "Enter a number to indicate which piece type to swap with pawn"<<endl;
-        cout<< "1.B, 2.KN, 3.Q, 4.R"<<endl;
-        cin>> selection;
-        if (selection==1){
-            board [row][column] = addColor("B", color);
-        }
-        if (selection==2){
-            board [row][column] = addColor("KN", color);
-        }
-        if (selection==3){
-            board [row][column] = addColor("Q", color);
-        }
-        if (selection==4){
-            board [row][column] = addColor("R", color);
-        }
+        
+        
+        bool inputVal = false;
+        
+        //Loop allowing one to pick a piece
+        while (inputVal != true){
+			int selection;
+			cout<< "Enter a number to indicate which piece type to swap with pawn"<<endl;
+			cout<< "1.B, 2.KN, 3.Q, 4.R"<<endl;
+			cin>> selection;
+			
+			//The selection of a piece
+			if (selection==1){
+				board [row][column] = addColor("B", color);
+			}
+			else if (selection==2){
+				board [row][column] = addColor("KN", color);
+			}
+			else if (selection==3){
+				board [row][column] = addColor("Q", color);
+			}
+			else if (selection==4){
+				board [row][column] = addColor("R", color);
+			}
+			else {
+				cout << "Please enter a proper choice (1-4)" << endl;
+			}
+		}
 		return true;
     }
 
