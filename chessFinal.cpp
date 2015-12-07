@@ -181,6 +181,9 @@ int main(){
 						newBoard.getBoard();
 						continue;
 					}
+					else if (newBoard.check() == 6){
+						cout << "No possible moves left. The game is a tie!\n";
+					}
 					playerNumber++;
 					continue;
 				}
@@ -215,6 +218,10 @@ int main(){
 						newBoard.getBoard();
 						continue;
 					}
+					else if (newBoard.check() == 5){
+						cout << "No possible moves left. The game is a tie!\n";
+					}
+					
 					playerNumber--;
 					continue;
 				}

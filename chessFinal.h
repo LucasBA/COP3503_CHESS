@@ -167,7 +167,11 @@ public:
     
     //check to see if piece can move
     bool movePiece(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter){
-         
+        
+        //These two are checking to make sure proper pieces are placed and for tying
+        if((board[rowPre][columnPre] == addColor("P","red")) && this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) && rowAfter == 8) return true;
+		if((board[rowPre][columnPre] == addColor("P","blue")) && this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) && rowAfter == 1) return true;
+        
         //checks for a legal move
         if (this -> legalityOfMove(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true){
 			string ptemp = board[rowAfter][columnAfter];
@@ -1578,6 +1582,28 @@ public:
 							}
 							return 3;
 						}
+						
+						//else statement looking for a tie
+						else{
+							int d = 0;
+							int e = 0;
+							for(int x=-1;x<2;x++){
+								for(int z=-1;z<2;z++){
+									if(x==0 && z==0 || i+x < 0 || i+x > 7 || j+z < 0 || j+z > 7) continue;
+									if((p2[i+x][j+z] == 0 || p2[i+x][j+z] == 1) && p1[i+x][j+z] < 3){
+										d++;
+									}
+								}
+							}
+							if(d == 0){
+								for(int x=0;x<8;x++){
+									for(int z=0;z<8;z++){
+										if(p1[x][z] > 0 && p1[x][z] != 5) e++;
+									}
+								}
+								if(e == 0) return 5;
+							}
+						}
 					}
 				}
 			}
@@ -1678,6 +1704,28 @@ public:
 								}
 							}
 							return 4;
+						}
+					}
+					
+					//This else statement is for checking a tie
+					else{
+						int d = 0;
+						int e = 0;
+						for(int x=-1;x<2;x++){
+							for(int z=-1;z<2;z++){
+								if(x==0 && z==0 || i+x < 0 || i+x > 7 || j+z < 0 || j+z > 7) continue;
+								if((p1[i+x][j+z] == 0 || p1[i+x][j+z] == 1) && p2[i+x][j+z] < 3){
+									d++;
+								}
+							}
+						}
+						if(d == 0){
+							for(int x=0;x<8;x++){
+								for(int z=0;z<8;z++){
+									if(p2[x][z] > 0 && p2[x][z] != 5) e++;
+								}
+							}
+							if(e == 0) return 6;
 						}
 					}
 				}
