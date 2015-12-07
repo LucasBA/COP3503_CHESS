@@ -285,7 +285,7 @@ public:
         else if (piece == addColor("K", "red") && playerNumber == 1) {
 			
 			//If the king follows its moveset and there is nothing in its path, the move is legal.
-            if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
+            if (this->kingConstraintsP1(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
 				
 				//Makes sure that P1's piece cannot take P1's piece.
 				if (this->pieceP1(rowAfter, columnAfter)) {		
@@ -385,7 +385,7 @@ public:
 		else if (piece == addColor("K", "blue") && playerNumber == 2) {
 			
 			//If the king follows its moveset and there is nothing in its path, the move is legal.
-			if (this->kingConstraintsP1(rowPre, columnPre, rowAfter, columnAfter) == true) {
+			if (this->kingConstraintsP1(playerNumber, rowPre, columnPre, rowAfter, columnAfter) == true) {
 				
 				//Makes sure that P2's piece cannot take P2's piece.
 				if (this->pieceP2(rowAfter, columnAfter)) {		
@@ -597,13 +597,51 @@ public:
 
     //king's constraints
     //Still needs check if piece was taken
-	bool kingConstraintsP1(int rowPre, int columnPre, int rowAfter, int columnAfter) {
+	bool kingConstraintsP1(int playerNumber, int rowPre, int columnPre, int rowAfter, int columnAfter) {
 		int logicMoveRow;
 		int logicMoveColumn;
 
 		logicMoveRow = rowAfter - rowPre;
-		logicMoveColumn = columnAfter - columnPre;
-
+		logicMoveColumn = columnAfter - columnPre;	     
+         		         
+       //This is the castling if statements for player 1
+        if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
+         		        
+			if (this -> movePiece(playerNumber, 1, 8 , 1, 6) == true){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
+			if (this -> movePiece(playerNumber, 1, 1 , 1, 4) == true){
+				return true;
+ 			}		 			
+ 			else {	
+				return false;
+			}
+		}
+		
+		//castling for player 2
+		if (rowPre == 1 && columnPre == 5 && logicMoveColumn == 2){
+         		        
+			if (this -> movePiece(playerNumber, 8, 8 , 8, 6) == true){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else if (rowPre == 1 && columnPre == 5 && logicMoveColumn == -2){
+			if (this -> movePiece(playerNumber, 8, 1 , 8, 4) == true){
+				return true;
+ 			}		 			
+ 			else {	
+				return false;
+			}
+		}
+		
 		//King can only move 1 space in any direction
 		if (logicMoveColumn == 1 || logicMoveRow == 1 || logicMoveColumn == -1 || logicMoveRow == -1) {
 			return true;
@@ -664,9 +702,13 @@ public:
 		return false;
 	}
     
+    
+    //Very abstract
      //check function
     //Returns 1 if PLAYER 1 is in check, 2 if PLAYER 2 is in check,
 	//3 if PLAYER 1 is in check mate, 4 if PLAYER 2 is in check mate
+	//5 if PLAYER 1 has no more available moves, 6 if PLAYER 2 has no more available moves
+	//in these situations the game will result in a tie
 	//returns 0 otherwise
     int check(){ 			
 							   
@@ -674,7 +716,8 @@ public:
 			int p2[8][8] = {0};
 			bool check[8][8] = {false};
 			
-			//player 1 pieces
+			//player 1 pieces. king gets 5 and places its location on the array
+			//Every other piece gets a value of 3
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
 					
@@ -692,7 +735,8 @@ public:
 				}
 			}
 			
-			//player 2 pieces
+			//player 2 pieces. king gets 5 and places its location on the array
+			//Every other piece gets a value of 3
 			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(board[i+1][j+1] == addColor( "K", "blue") ){
@@ -707,10 +751,16 @@ public:
 				}
 			}
 			
-			//creates maps of possible moves for each player
+			//creates maps of possible moves for each player. king is marked as 5, defended pieces
+			//or pieces that have another piece with an attacking move on its location
+			//are marked as 4, pieces that are not defended are marked as 3s, standard
+			//attacking moves are marked as 2s, non attacking moves (forward pawn movements)
+			//are marked as 1s, and every other space is kept as a 0. This is done for each player.
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){	
 					
+					//Find the panws on theboard and places their possible attacking moves (2s)
+					//and their possible standard forward moves (1s)
 					if(board[i+1][j+1] == addColor( "P", "red") ){
 						
 						if(p2[i+1][j] < 3 && p1[i+1][j] < 3 && p2[i+2][j] < 3 && p1[i+2][j] < 2){
@@ -786,6 +836,8 @@ public:
 						}
 					}
 					
+					//Finds all the rooks on each board and puts all their possible attacking
+					//moves as 2s
 					if(board[i+1][j+1] == addColor( "R", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -922,6 +974,8 @@ public:
 						}
 					}
 					
+					//Finds all the bishops on the board and places their possible attacking moves
+					//as 2s
 					if(board[i+1][j+1] == addColor( "B", "red") ){
 						int displace = 1;
 						while(i-displace >= 0 && j-displace >= 0){
@@ -1056,6 +1110,7 @@ public:
 						}
 					}
 					
+					//marks all the queens possible attacking moves as 2s								
 					if(board[i+1][j+1] == addColor( "Q", "red") ){
 						int displace = 1;
 						while(i-displace >= 0){
@@ -1320,6 +1375,7 @@ public:
 						}
 					}
 					
+					//King pieces
 					if(board[i+1][j+1] == addColor( "K", "red") ){
 						for(int m=-1;m<2;m++){
 							for(int n=-1;n<2;n++){
@@ -1348,6 +1404,7 @@ public:
 						}
 					}
 					
+					//marks all the possible knights attacking moves as 2s
 					if(board[i+1][j+1] == addColor( "KN", "red") ){
 						if(j-2 >= 0){
 							if(i-1>=0){
@@ -1485,7 +1542,7 @@ public:
 				}
 			}
 			
-			//returns 3 if player 1 in checkmate, 1 if in check
+			//returns 3 if player 1 in checkmate, 1 if in check, 5 if player 1 has no available moves
 			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(p1[i][j] == 5){
@@ -1608,7 +1665,7 @@ public:
 				}
 			}
 			
-			//returns 4 if player 2 in checkmate, 2 if in check
+			//returns 4 if player 2 in checkmate, 2 if in check, 6 if player 2 has no available moves
 			for(int i=0;i<8;i++){	
 				for(int j=0;j<8;j++){
 					if(p2[i][j] == 5){
